@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="otSteel" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="50%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="matDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="otGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fa8e66" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#fa8e66" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="120" cy="120" r="105" fill="url(#otGlow)" />
+  <ellipse cx="120" cy="216" rx="85" ry="12" fill="#000000" opacity="0.25" />
+  
+  <!-- Heavy Cast Floor Base (T-Shape, Stainless Steel Shroud) -->
+  <path d="M 60 205 L 180 205 L 175 195 L 65 195 Z" fill="url(#otSteel)" stroke="#334155" stroke-width="2"/>
+  <circle cx="75" cy="204" r="4" fill="#0f172a"/>
+  <circle cx="165" cy="204" r="4" fill="#0f172a"/>
+  
+  <!-- Telescopic Center Lifting Column (Hydraulic) -->
+  <rect x="100" y="160" width="40" height="36" fill="url(#otSteel)" stroke="#475569" stroke-width="2" rx="2"/>
+  <rect x="105" y="125" width="30" height="38" fill="url(#otSteel)" stroke="#475569" stroke-width="1.8" rx="2"/>
+  
+  <!-- Sub-frame Tilt Mechanism -->
+  <rect x="92" y="118" width="56" height="8" rx="3" fill="#1e293b"/>
+  <circle cx="120" cy="122" r="3" fill="#fa8e66"/>
+  
+  <!-- Table Top 4 Multi-Articulated Sections (Head, Back, Pelvic, Split Leg) -->
+  <!-- Stainless Sub-deck Frame -->
+  <line x1="28" y1="110" x2="212" y2="110" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Black Conductive Memory Foam Mattresses -->
+  <!-- Headrest -->
+  <rect x="25" y="96" width="32" height="12" rx="3" fill="url(#matDark)" stroke="#0284c7" stroke-width="1.2"/>
+  <!-- Torso / Backrest Section -->
+  <rect x="61" y="94" width="52" height="14" rx="3" fill="url(#matDark)" stroke="#0284c7" stroke-width="1.2"/>
+  <!-- Pelvic / Seat Section -->
+  <rect x="117" y="94" width="38" height="14" rx="3" fill="url(#matDark)" stroke="#0284c7" stroke-width="1.2"/>
+  <!-- Leg Section (Slightly tilted down) -->
+  <rect x="159" y="96" width="54" height="12" rx="3" fill="url(#matDark)" stroke="#0284c7" stroke-width="1.2"/>
+  
+  <!-- Side Accessory Rails & Armboard -->
+  <line x1="62" y1="114" x2="154" y2="114" stroke="#cbd5e1" stroke-width="3"/>
+  <rect x="75" y="115" width="35" height="6" rx="2" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+  
+  <!-- Hand Controller (Pendant Remote) hanging on side -->
+  <rect x="145" y="125" width="12" height="24" rx="3" fill="#1e293b" stroke="#fa8e66" stroke-width="1.2"/>
+  <circle cx="151" cy="132" r="2" fill="#22c55e"/>
+  <circle cx="151" cy="138" r="2" fill="#e2e8f0"/>
+  <circle cx="151" cy="144" r="2" fill="#e2e8f0"/>
+  <path d="M 151 125 Q 155 118 148 116" fill="none" stroke="#64748b" stroke-width="1.5"/>
+</svg>
