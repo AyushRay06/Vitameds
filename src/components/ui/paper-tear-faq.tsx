@@ -187,9 +187,10 @@ function makeFourSideTear(seed: number): FourSideTear {
 }
 
 function getPosterBounds(W: number, H: number) {
-  const padX = Math.max(24, Math.min(62, W * 0.048));
-  const padTop = Math.max(44, Math.min(72, H * 0.068));
-  const padBottom = Math.max(126, Math.min(156, H * 0.165));
+  const isMobile = W < 768;
+  const padX = isMobile ? 6 : Math.max(24, Math.min(62, W * 0.048));
+  const padTop = isMobile ? 20 : Math.max(44, Math.min(72, H * 0.068));
+  const padBottom = isMobile ? 104 : Math.max(126, Math.min(156, H * 0.165));
   return {
     x0: padX,
     x1: Math.max(padX + 100, W - padX),
@@ -207,6 +208,7 @@ function buildFourSidePoints(
 ) {
   const { x0, x1, y0, y1 } = getPosterBounds(W, H);
   const p = easeTear(progress);
+  const sideScale = W < 768 ? 0.32 : 1;
 
   const curX0 = x0 * p;
   const curX1 = W - (W - x1) * p;
@@ -221,13 +223,13 @@ function buildFourSidePoints(
   for (let i = 0; i < H_N; i++) {
     const u = i / (H_N - 1);
     const x = curX0 + (curX1 - curX0) * u;
-    const y = curY0 + t.top[i] * p + (useRimInset ? t.rimTop[i] * p : 0);
+    const y = curY0 + t.top[i] * p * sideScale + (useRimInset ? t.rimTop[i] * p * sideScale : 0);
     topPts.push([x, y]);
   }
   for (let i = 0; i < V_N; i++) {
     const v = i / (V_N - 1);
     const y = curY0 + (curY1 - curY0) * v;
-    const x = curX1 + t.right[i] * p - (useRimInset ? t.rimRight[i] * p : 0);
+    const x = curX1 + t.right[i] * p * sideScale - (useRimInset ? t.rimRight[i] * p * sideScale : 0);
     rightPts.push([x, y]);
   }
   for (let i = H_N - 1; i >= 0; i--) {
@@ -239,7 +241,7 @@ function buildFourSidePoints(
   for (let i = V_N - 1; i >= 0; i--) {
     const v = i / (V_N - 1);
     const y = curY0 + (curY1 - curY0) * v;
-    const x = curX0 + t.left[i] * p + (useRimInset ? t.rimLeft[i] * p : 0);
+    const x = curX0 + t.left[i] * p * sideScale + (useRimInset ? t.rimLeft[i] * p * sideScale : 0);
     leftPts.push([x, y]);
   }
 
@@ -1229,11 +1231,11 @@ const CSS = `
 
 @media (max-width: 768px) {
   .ptf-content {
-    padding: 72px 24px 160px;
+    padding: 58px 20px 142px;
   }
   .ptf-under {
-    margin-top: -78px;
-    padding: 14px 24px 30px;
+    margin-top: -74px;
+    padding: 14px 20px 28px;
   }
   .ptf-header-right {
     align-items: flex-start;
@@ -1246,13 +1248,13 @@ const CSS = `
     font-size: 15.5px;
   }
   .ptf-ans {
-    padding: 0 8px 18px 38px;
+    padding: 0 6px 16px 34px;
     font-size: 14px;
   }
   .ptf-pin {
-    width: 48px;
-    height: 48px;
-    bottom: 100px;
+    width: 46px;
+    height: 46px;
+    bottom: 94px;
   }
 }
 `;

@@ -97,7 +97,7 @@ export const InfiniteSlider = memo(function InfiniteSlider({
     <div className={cn("overflow-hidden", className)}>
       <motion.div
         ref={ref}
-        className="flex w-max"
+        className={cn("flex", direction === "horizontal" ? "w-max" : "w-full")}
         style={{
           ...(direction === "horizontal"
             ? { x: translation }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -85,6 +85,17 @@ export default function ProductCategoriesSection() {
   const [activeId, setActiveId] = useState<string>(DIVISIONS[0].id);
   const current = DIVISIONS.find((d) => d.id === activeId) ?? DIVISIONS[0];
 
+  useEffect(() => {
+    const onSelect = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      if (id && DIVISIONS.some((d) => d.id === id)) {
+        setActiveId(id);
+      }
+    };
+    window.addEventListener("vitamed:select-division", onSelect);
+    return () => window.removeEventListener("vitamed:select-division", onSelect);
+  }, []);
+
   return (
     <section id="categories" className="relative w-full bg-[#f2efe6] py-24 md:py-36 px-6 md:px-12 overflow-hidden">
       <div className="mx-auto max-w-[1312px]">
@@ -96,8 +107,90 @@ export default function ProductCategoriesSection() {
           </h2>
         </div>
 
-        {/* DOE 12-Column Editorial Split (.duo__grid) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        {/* Mobile-only Inline Expandable Divisions (< lg) */}
+        <div className="lg:hidden divide-y divide-[rgba(11,15,13,0.13)] border-y border-[rgba(11,15,13,0.13)]">
+          {DIVISIONS.map((div) => {
+            const isActive = div.id === activeId;
+            return (
+              <div key={div.id} className="py-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveId(div.id)}
+                  aria-expanded={isActive}
+                  className="w-full py-4 px-1 flex items-center justify-between gap-4 text-left cursor-pointer"
+                >
+                  <div className="flex items-baseline gap-3.5 min-w-0">
+                    <span
+                      className={`text-xs font-mono ${
+                        isActive ? "text-[#163f35] font-bold" : "text-[#454c48]/60"
+                      }`}
+                    >
+                      {div.num}
+                    </span>
+                    <div className="min-w-0">
+                      <span
+                        className={`block text-lg tracking-[-0.02em] ${
+                          isActive
+                            ? "font-editorial italic text-[#163f35]"
+                            : "font-medium text-[#0b0f0d]"
+                        }`}
+                      >
+                        {div.name}
+                      </span>
+                      <span className="block text-xs text-[#454c48] truncate mt-0.5">
+                        {div.subtitle}
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowUpRight
+                    className={`w-4 h-4 shrink-0 transition-transform ${
+                      isActive ? "text-[#163f35] rotate-90" : "text-[#454c48]/40"
+                    }`}
+                  />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isActive && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-5 pt-1 space-y-4">
+                        <div className="bg-white p-2.5 border border-[rgba(22,63,53,0.14)] shadow-sm">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#e2dfd5]">
+                            <img
+                              src={div.image}
+                              alt={div.name}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        </div>
+                        <p className="text-sm text-[#454c48] leading-relaxed">
+                          {div.description}
+                        </p>
+                        <Link
+                          href="#contact"
+                          className="inline-flex items-center gap-2.5 h-10 pl-4 pr-1.5 rounded-full bg-[#163f35] text-white text-xs font-semibold"
+                        >
+                          <span>Request Division Catalogue</span>
+                          <span className="w-7 h-7 rounded-full bg-white text-[#163f35] flex items-center justify-center">
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </span>
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop 12-Column Editorial Split (.duo__grid) — unchanged */}
+        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left 7 Columns: Paper-Cutout Image Showcase (zero text on image) */}
           <div className="lg:col-span-7 relative pt-3">
             {/* Mini glossy #163f35 pushpin */}

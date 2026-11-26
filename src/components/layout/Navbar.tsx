@@ -3,15 +3,33 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import QuoteModal from "@/components/ui/QuoteModal";
+
+const NAV_CATEGORIES = [
+  { id: "medical-equipment", num: "01", name: "Medical Equipment", sub: "ICU Monitors · Infusion" },
+  { id: "hospital-furniture", num: "02", name: "Hospital Furniture", sub: "5-Function ICU Beds · OT" },
+  { id: "pharma", num: "03", name: "Pharma", sub: "IV Fluids · Formulations" },
+  { id: "medical-disposable", num: "04", name: "Medical Disposable", sub: "Syringes · Cannulas · PPE" },
+  { id: "hospital-dressing", num: "05", name: "Hospital Dressing", sub: "Sterile Gauze · Swabs" },
+  { id: "diagnostics", num: "06", name: "Diagnostics", sub: "Ultrasound · ECG · Labs" },
+  { id: "surgical-equipment", num: "07", name: "Surgical Equipment", sub: "OT Lights · Autoclaves" },
+];
 
 const NAV_TEAR_BOTTOM =
   "M0,0 L1200,0 L1200,2.5 L1164,5.5 L1128,2 L1092,6 L1056,2.5 L1020,5.5 L984,2 L948,6 L912,2.5 L876,5.5 L840,2 L804,6 L768,2.5 L732,5.5 L696,2 L660,6 L624,2.5 L588,5.5 L552,2 L516,6 L480,2.5 L444,5.5 L408,2 L372,6 L336,2.5 L300,5.5 L264,2 L228,6 L192,2.5 L156,5.5 L120,2 L84,6 L48,2.5 L18,5.5 L0,2.5 Z";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileCatOpen, setMobileCatOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
+  const [catOpen, setCatOpen] = useState(false);
+
+  const selectDivision = (id: string) => {
+    setCatOpen(false);
+    setMobileMenuOpen(false);
+    window.dispatchEvent(new CustomEvent("vitamed:select-division", { detail: id }));
+  };
 
   const links = [
     { href: "#categories", label: "Categories" },
@@ -56,15 +74,81 @@ export default function Navbar() {
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-1 lg:gap-2">
-              {links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  className="px-3.5 py-1.5 rounded-full text-[13px] font-medium tracking-[-0.01em] text-[#0b0f0d]/75 hover:text-[#163f35] hover:bg-[#163f35]/[0.06] transition-all duration-200"
-                >
-                  {l.label}
-                </a>
-              ))}
+              {links.map((l) =>
+                l.href === "#categories" ? (
+                  <div
+                    key={l.href}
+                    className="relative"
+                    onMouseEnter={() => setCatOpen(true)}
+                    onMouseLeave={() => setCatOpen(false)}
+                  >
+                    <a
+                      href={l.href}
+                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-[13px] font-medium tracking-[-0.01em] text-[#0b0f0d]/75 hover:text-[#163f35] hover:bg-[#163f35]/[0.06] transition-all duration-200"
+                    >
+                      <span>{l.label}</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                          catOpen ? "rotate-180 text-[#163f35]" : ""
+                        }`}
+                      />
+                    </a>
+
+                    <AnimatePresence>
+                      {catOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                          transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute left-0 top-full pt-3 z-50"
+                        >
+                          <div className="w-[460px] border border-[#163f35]/15 bg-white p-3 shadow-[0_20px_44px_-12px_rgba(11,15,13,0.18)]">
+                            <div className="px-2.5 pb-2 mb-2 border-b border-dashed border-[#163f35]/15 flex items-center justify-between">
+                              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#163f35]">
+                                7 Clinical Divisions
+                              </span>
+                              <span className="font-mono text-[10px] text-[#454c48]">
+                                VitaMed Catalogue
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-1">
+                              {NAV_CATEGORIES.map((cat) => (
+                                <a
+                                  key={cat.id}
+                                  href="#categories"
+                                  onClick={() => selectDivision(cat.id)}
+                                  className="group/item flex items-start gap-2.5 rounded-md px-2.5 py-2 hover:bg-[#f2efe6] transition-colors"
+                                >
+                                  <span className="font-mono text-[10px] text-[#163f35]/70 pt-0.5">
+                                    {cat.num}
+                                  </span>
+                                  <div className="min-w-0">
+                                    <span className="block text-[13px] font-semibold text-[#0b0f0d] group-hover/item:text-[#163f35] leading-tight">
+                                      {cat.name}
+                                    </span>
+                                    <span className="block text-[10.5px] text-[#454c48] truncate mt-0.5">
+                                      {cat.sub}
+                                    </span>
+                                  </div>
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    className="px-3.5 py-1.5 rounded-full text-[13px] font-medium tracking-[-0.01em] text-[#0b0f0d]/75 hover:text-[#163f35] hover:bg-[#163f35]/[0.06] transition-all duration-200"
+                  >
+                    {l.label}
+                  </a>
+                )
+              )}
             </nav>
 
             {/* Action Button */}
@@ -111,18 +195,71 @@ export default function Navbar() {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="md:hidden mt-2 max-w-6xl mx-auto pointer-events-auto border border-[#163f35]/14 bg-white p-5 shadow-xl space-y-2"
+              className="md:hidden mt-2 max-w-6xl mx-auto pointer-events-auto border border-[#163f35]/14 bg-white p-5 shadow-xl space-y-2 max-h-[80svh] overflow-y-auto"
             >
-              {links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm font-medium text-[#0b0f0d] hover:bg-[#163f35]/[0.06] hover:text-[#163f35] transition-colors"
-                >
-                  {l.label}
-                </a>
-              ))}
+              {links.map((l) =>
+                l.href === "#categories" ? (
+                  <div key={l.href} className="space-y-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setMobileCatOpen((prev) => !prev)}
+                      aria-expanded={mobileCatOpen}
+                      className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-[#0b0f0d] hover:bg-[#163f35]/[0.06] hover:text-[#163f35] transition-colors cursor-pointer"
+                    >
+                      <span>{l.label}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          mobileCatOpen ? "rotate-180 text-[#163f35]" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {mobileCatOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mx-1 p-2.5 border border-[#163f35]/14 bg-[#faf9f5] grid grid-cols-1 gap-1">
+                            {NAV_CATEGORIES.map((cat) => (
+                              <a
+                                key={cat.id}
+                                href="#categories"
+                                onClick={() => selectDivision(cat.id)}
+                                className="flex items-center justify-between gap-2 rounded px-2.5 py-2 hover:bg-[#f2efe6] transition-colors"
+                              >
+                                <div className="flex items-baseline gap-2.5 min-w-0">
+                                  <span className="font-mono text-[10px] text-[#163f35]/70">
+                                    {cat.num}
+                                  </span>
+                                  <span className="text-xs font-semibold text-[#0b0f0d] truncate">
+                                    {cat.name}
+                                  </span>
+                                </div>
+                                <span className="text-[10px] text-[#454c48] shrink-0">
+                                  {cat.sub}
+                                </span>
+                              </a>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-sm font-medium text-[#0b0f0d] hover:bg-[#163f35]/[0.06] hover:text-[#163f35] transition-colors"
+                  >
+                    {l.label}
+                  </a>
+                )
+              )}
               <div className="pt-3 border-t border-dashed border-[#163f35]/20">
                 <button
                   onClick={() => {

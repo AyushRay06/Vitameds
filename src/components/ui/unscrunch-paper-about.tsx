@@ -371,23 +371,23 @@ export default function UnscrunchPaperAbout() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 55,
-    damping: 20,
-    mass: 0.8,
+    stiffness: 95,
+    damping: 22,
+    mass: 0.45,
   });
 
   useEffect(() => {
     return smoothProgress.on("change", (v) => {
-      const u = Math.max(0, Math.min(1, (v - 0.06) / 0.62));
+      const u = Math.max(0, Math.min(1, (v - 0.04) / 0.46));
       unscrunchRef.current = u;
     });
   }, [smoothProgress]);
 
-  const sheetOpacity = useTransform(smoothProgress, [0.64, 0.74], [0, 1]);
-  const webglOpacity = useTransform(smoothProgress, [0.7, 0.84], [1, 0]);
-  const contentOpacity = useTransform(smoothProgress, [0.66, 0.84], [0, 1]);
-  const pinOpacity = useTransform(smoothProgress, [0.72, 0.86], [0, 1]);
-  const pinY = useTransform(smoothProgress, [0.72, 0.86], [-14, 0]);
+  const sheetOpacity = useTransform(smoothProgress, [0.46, 0.56], [0, 1]);
+  const webglOpacity = useTransform(smoothProgress, [0.5, 0.62], [1, 0]);
+  const contentOpacity = useTransform(smoothProgress, [0.44, 0.58], [0, 1]);
+  const pinOpacity = useTransform(smoothProgress, [0.52, 0.64], [0, 1]);
+  const pinY = useTransform(smoothProgress, [0.52, 0.64], [-14, 0]);
 
   const rimPath = buildTornSheetPath(size.w, size.h, INSET_PX - 3);
   const sheetPath = buildTornSheetPath(size.w, size.h, INSET_PX);
@@ -395,7 +395,7 @@ export default function UnscrunchPaperAbout() {
   return (
     <div
       ref={trackRef}
-      className="relative w-full min-h-[165svh] sm:min-h-[210svh] px-3 sm:px-8 md:px-12 py-6 sm:py-8 overflow-x-clip"
+      className="relative w-full min-h-[135svh] sm:min-h-[155svh] px-3 sm:px-8 md:px-12 py-6 sm:py-8 overflow-x-clip"
     >
       <div className="sticky top-16 sm:top-20 mx-auto max-w-[1120px] flex items-center justify-center min-h-[68svh] sm:min-h-[76svh] overflow-visible">
         {/* Stage 1: Oversized Canvas (centered identically on sheetRef) */}

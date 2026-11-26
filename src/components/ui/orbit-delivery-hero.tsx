@@ -1305,11 +1305,10 @@ function App({ showHeader = true, onQuoteClick = null }) {
           {!ready && <div className="loading" role="status"><span />Your little world is taking shape…</div>}
         </div>
       </div>
-      <div className={`planet-caption ${dragging ? "is-dragging" : ""}`} aria-hidden="true"><p>{!auto ? "Press Start" : dragging ? "VitaMed Express." : "Drag to inspect"}<br />{!auto ? "to resume orbit" : dragging ? "In transit." : "Global Supply Chain"}</p><svg viewBox="0 0 180 165" fill="none"><path d="M161 148C137 82 103 39 28 14m0 0 6 16m-6-16 19-2" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" /></svg></div>
       <p id="planet-instructions" className="sr-only">Drag in any direction, or use the arrow keys, to rotate the 3D planet. Space pauses the planet and lets the courier wave; press again to start. Rotation is locked while paused. On touch screens, swipe outside the planet to scroll the page.</p>
       <div className="cloud-bank" aria-hidden="true"><i /><i /><i /><i /><i /></div>
     </section></main>
-    <footer className="site-footer"><p className="footer-left">1,200+ Hospitals<br />25+ Nations Global Reach</p><button className="motion-button" onClick={toggleMotion} aria-pressed={!auto} aria-label={auto ? "Pause and inspect" : "Start moving"}>{auto ? <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10m6-10v10" stroke="currentColor" strokeWidth="1.5" /></svg> : <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 8 6-8 6Z" fill="currentColor" /></svg>}<span>{auto ? "Pause" : "Start"}</span></button><p className="footer-right">Faridabad Facility<br />Precision Biomedical<br />Manufacturing</p></footer>
+    <footer className="site-footer"><span /><button className="motion-button" onClick={toggleMotion} aria-pressed={!auto} aria-label={auto ? "Pause and inspect" : "Start moving"}>{auto ? <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10m6-10v10" stroke="currentColor" strokeWidth="1.5" /></svg> : <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 8 6-8 6Z" fill="currentColor" /></svg>}<span>{auto ? "Pause" : "Start"}</span></button><span /></footer>
     {prototype && <aside className="prototype-label">Movement prototype <a href="./">View finished scene ↗</a></aside>}
     {story && <StoryDialog story={story} onClose={() => setStory(null)} />}
   </div>;

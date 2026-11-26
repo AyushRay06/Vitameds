@@ -145,7 +145,13 @@ export function TestimonialsSection({
             "mask-[linear-gradient(to_bottom,transparent,black_14%,black_86%,transparent)]",
           )}
         >
-          <InfiniteSlider direction="vertical" speed={28} speedOnHover={60} gap={22}>
+          <InfiniteSlider
+            className="w-full max-w-sm"
+            direction="vertical"
+            speed={28}
+            speedOnHover={60}
+            gap={22}
+          >
             {firstColumn.map((testimonial, idx) => (
               <TestimonialsCard
                 key={testimonial.name}
@@ -155,7 +161,7 @@ export function TestimonialsSection({
             ))}
           </InfiniteSlider>
           <InfiniteSlider
-            className="hidden md:block"
+            className="hidden md:block w-full max-w-sm"
             direction="vertical"
             speed={38}
             speedOnHover={75}
@@ -170,7 +176,7 @@ export function TestimonialsSection({
             ))}
           </InfiniteSlider>
           <InfiniteSlider
-            className="hidden lg:block"
+            className="hidden lg:block w-full max-w-sm"
             direction="vertical"
             speed={32}
             speedOnHover={65}
@@ -225,7 +231,7 @@ function TestimonialsCard({
 
       {/* Cream paper sheet body */}
       <div
-        className="relative border border-b-0 border-[rgba(22,63,53,0.14)] bg-[#f2efe6] px-7 pt-8 pb-6 shadow-[0_10px_26px_-12px_rgba(11,15,13,0.16)] transition-shadow duration-300 group-hover:shadow-[0_16px_34px_-12px_rgba(22,63,53,0.22)]"
+        className="relative border border-b-0 border-[rgba(22,63,53,0.14)] bg-[#f2efe6] px-5 sm:px-7 pt-8 pb-6 shadow-[0_10px_26px_-12px_rgba(11,15,13,0.16)] transition-shadow duration-300 group-hover:shadow-[0_16px_34px_-12px_rgba(22,63,53,0.22)]"
         style={{
           backgroundImage:
             "radial-gradient(rgba(22,63,53,0.035) 1px, transparent 0)",

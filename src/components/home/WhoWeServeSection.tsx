@@ -91,7 +91,92 @@ export default function WhoWeServeSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        {/* Mobile-only Inline Expandable Paper Dossiers (< lg) */}
+        <div className="lg:hidden divide-y divide-[rgba(11,15,13,0.12)] border-y border-[rgba(11,15,13,0.12)]">
+          {SEGMENTS.map((seg, idx) => {
+            const isActive = idx === activeIndex;
+            const Icon = seg.icon;
+            return (
+              <div key={seg.num} className="py-1">
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex(idx)}
+                  aria-expanded={isActive}
+                  className={`w-full py-4 px-2 flex items-center justify-between gap-3 text-left cursor-pointer transition-colors ${
+                    isActive ? "bg-[#f2efe6]/60" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span
+                      className={`font-mono text-xs ${
+                        isActive ? "text-[#163f35] font-bold" : "text-[#454c48]/60"
+                      }`}
+                    >
+                      {seg.num}
+                    </span>
+                    <span
+                      className={`text-base tracking-[-0.015em] ${
+                        isActive ? "font-editorial italic text-[#163f35]" : "font-medium text-[#0b0f0d]"
+                      }`}
+                    >
+                      {seg.title}
+                    </span>
+                  </div>
+                  <span
+                    className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                      isActive
+                        ? "border-[#163f35] bg-[#163f35] text-white"
+                        : "border-[rgba(22,63,53,0.16)] bg-white text-[#163f35]/70"
+                    }`}
+                  >
+                    <Icon className="h-3.5 w-3.5" strokeWidth={1.8} />
+                  </span>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isActive && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div
+                        className="mb-4 mx-1 border border-[rgba(22,63,53,0.16)] bg-[#f2efe6] p-5 space-y-4"
+                        style={{
+                          backgroundImage:
+                            "radial-gradient(rgba(22,63,53,0.04) 1px, transparent 0)",
+                          backgroundSize: "14px 14px",
+                        }}
+                      >
+                        <span className="block font-mono text-[10px] uppercase tracking-[0.16em] text-[#163f35]">
+                          {seg.tag}
+                        </span>
+                        <p className="text-sm text-[#454c48] leading-relaxed">
+                          {seg.detail}
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 pt-2 border-t border-dashed border-[rgba(22,63,53,0.2)]">
+                          {seg.supply.map((item) => (
+                            <span
+                              key={item}
+                              className="inline-block border border-[rgba(22,63,53,0.18)] bg-white/85 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.06em] text-[#163f35]"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop 12-Column Split (unchanged) */}
+        <div className="hidden lg:grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left 5 Columns: Interactive Buyer Index */}
           <div className="lg:col-span-5 divide-y divide-[rgba(11,15,13,0.12)] border-y border-[rgba(11,15,13,0.12)]">
             {SEGMENTS.map((seg, idx) => {
